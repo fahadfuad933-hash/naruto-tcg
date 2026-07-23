@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../css/style.css">
+<title>stats-probe</title>
+</head>
+<body>
+
+  <div id="bg-leaves"></div>
+
+  <!-- ================= TITEL ================= -->
+  <section class="screen active" id="scr-title">
+    <div class="title-wrap">
+      <div class="title-spiral">🍥<img src="assets/ui/arena-emblem.jpg" alt="" draggable="false" onerror="this.remove()"></div>
+      <h1 class="game-logo">NARUTO <span>TGC</span></h1>
+      <p class="game-sub">— Chakra-Duell —</p>
+      <p class="tap-start blink">Tippen zum Starten</p>
+      <p class="title-hint">Speed-Duell · 8000 LP · wie Duel Links</p>
+    </div>
+  </section>
+
+  <!-- ================= STORY ================= -->
+  <section class="screen" id="scr-story">
+    <div class="story-bg" id="story-bg-a"></div>
+    <div class="story-bg" id="story-bg-b"></div>
+    <div id="story-face"><img id="story-face-img" alt="" draggable="false"></div>
+    <div class="story-cine top"></div>
+    <div class="story-cine bottom"></div>
+    <button class="btn btn-mini" id="story-skip">Überspringen ⏭</button>
+    <div id="story-sub" class="hidden">
+      <div id="story-who" class="hidden"></div>
+      <div id="story-text"></div>
+      <div id="story-hint" class="hidden">▸</div>
+    </div>
+    <div id="story-choices" class="hidden"></div>
+    <div id="story-namebox" class="hidden">
+      <div id="story-name-q">Wie lautet dein Name, Duellant?</div>
+      <input id="story-name-input" maxlength="12" placeholder="Kaze" autocomplete="off">
+      <button class="btn btn-primary" id="story-name-ok">So heiße ich!</button>
+    </div>
+  </section>
+
+  <!-- ================= STADT-MAP (Story-Hub) ================= -->
+  <section class="screen" id="scr-map">
+    <div id="map-inner">
+      <div id="map-stations"></div>
+    </div>
+    <div id="map-objective"></div>
+    <button class="btn btn-back" id="map-back">‹ Menü</button>
+    <button class="btn btn-back" id="map-world">🌀 Shinobi-Ära</button>
+    <div id="map-panel" class="hidden">
+      <div id="map-panel-head">
+        <span id="map-panel-title"></span>
+        <button class="btn btn-mini" id="map-panel-close">✕</button>
+      </div>
+      <div id="map-panel-list"></div>
+    </div>
+  </section>
+
+  <!-- ================= KARTENLADEN (Shop) ================= -->
+  <section class="screen" id="scr-shop">
+    <div class="shop-wrap">
+      <div class="shop-head">
+        <button class="btn btn-back" id="shop-back">‹ Karte</button>
+        <h2>🏪 Kartenladen</h2>
+        <div class="ryo-badge" id="shop-ryo">💰 0</div>
+      </div>
+      <p class="shop-hint" id="shop-countdown">Neues Angebot in …</p>
+
+      <h3 class="shop-sec-title">🃏 Angebot (rotiert stündlich)</h3>
+      <div class="shop-grid" id="shop-stock"></div>
+
+      <h3 class="shop-sec-title">📦 Booster & Packs</h3>
+      <div class="shop-rows" id="shop-packs"></div>
+
+      <h3 class="shop-sec-title">🎨 Arena-Themes</h3>
+      <div class="shop-rows" id="shop-themes"></div>
+
+      <h3 class="shop-sec-title">💰 Verkaufen (doppelte Karten)</h3>
+      <div class="shop-grid" id="shop-sell"></div>
+    </div>
+  </section>
+
+  <!-- ================= HAUPTMENÜ ================= -->
+  <section class="screen" id="scr-menu">
+    <div class="panel menu-panel">
+      <div class="menu-head">
+        <span class="menu-logo">🍥<img src="assets/ui/arena-emblem.jpg" alt="" draggable="false" onerror="this.remove()"></span>
+        <h2>NARUTO TGC</h2>
+        <p class="menu-wins" id="menu-wins">Siege: 0</p>
+      </div>
+      <div class="menu-buttons">
+        <button class="btn btn-big btn-primary" id="btn-map">🗺️ Story-Modus</button>
+        <button class="btn btn-big" id="btn-duel">🎯 Übungsduell</button>
+        <button class="btn btn-big" id="btn-story">🎬 Intro ansehen</button>
+        <button class="btn btn-big" id="btn-deck">🃏 Deck-Editor</button>
+        <button class="btn btn-big" id="btn-help">📖 Anleitung</button>
+        <div class="menu-grid">
+          <button class="btn" id="btn-sound">🔊 Ton: An</button>
+          <button class="btn" id="btn-music">🎵 Musik: An</button>
+          <button class="btn" id="btn-duelmusic">🎶 Chakra Clash</button>
+          <button class="btn" id="btn-musicvol">🔉 30 %</button>
+          <button class="btn" id="btn-stats">📊 Statistik</button>
+          <button class="btn" id="btn-backup">💾 Backup</button>
+        </div>
+      </div>
+      <p class="menu-foot">Tipp: Querformat ist am schönsten 📱↔️</p>
+    </div>
+  </section>
+
+  <!-- ================= GEGNERWAHL ================= -->
+  <section class="screen" id="scr-select">
+    <div class="panel wide">
+      <div class="panel-head">
+        <button class="btn btn-back" data-back="scr-menu">‹ Zurück</button>
+        <h2>Übungsduell — Gegner wählen</h2>
+      </div>
+      <p class="practice-hint">Siege droppen Karten aus dem gegnerischen Deck: N sicher · R 50 % · SR 5 % · UR 2 % — beim Erst-Sieg deutlich besser! 🗺️</p>
+      <div id="opp-list" class="opp-list"></div>
+    </div>
+  </section>
+
+  <!-- ================= DUELL ================= -->
+  <section class="screen" id="scr-duel">
+    <div id="duel-field">
+      <!-- 3D-Arena -->
+      <div id="board-scene">
+        <div id="board-3d">
+          <img class="arena-emblem-img" src="assets/ui/arena-emblem.jpg" alt="" draggable="false" onerror="this.remove()">
+          <div class="zone-row" id="opp-st"></div>
+          <div class="zone-row" id="opp-mon"></div>
+          <div class="zone-row" id="my-mon"></div>
+          <div class="zone-row" id="my-st"></div>
+          <!-- ygopro-Stil: Deck-Stapel & Friedhof als Feld-Zonen (beide Seiten) -->
+          <div class="board-zones opp" id="opp-zones">
+            <div class="pile deck" id="opp-deckpile" title="Gegner-Deck"></div>
+            <button class="pile gy" id="opp-gypile" title="Gegner-Friedhof ansehen"></button>
+          </div>
+          <div class="board-zones my" id="my-zones">
+            <button class="pile gy" id="my-gypile" title="Friedhof ansehen"></button>
+            <div class="pile deck" id="my-deckpile" title="Deck"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VS-Gegenüberstellung beim Angriff (ygopro-Stil) -->
+      <div id="duel-vs" class="hidden">
+        <div class="vs-card" id="vs-a"></div>
+        <div class="vs-mid">VS</div>
+        <div class="vs-card" id="vs-b"></div>
+      </div>
+
+      <!-- Gegner-Hand (verdeckte Karten) -->
+      <div id="opp-fan"></div>
+
+      <!-- Neon-Phasenanzeige über der Arena -->
+      <div id="board-phase"></div>
+
+      <!-- HUD: Gegner -->
+      <header class="duel-topbar">
+        <div class="duelist" id="info-opp">
+          <div class="avatar" id="opp-avatar">🌑</div>
+          <div class="duelist-meta">
+            <div class="duelist-name" id="opp-name">Gegner</div>
+            <div class="lpbar"><div class="lpfill" id="opp-lpfill"></div><span class="lptext" id="opp-lptext">8000</span></div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="stat-chip" title="Zug">🔄 <b id="turn-num">1</b></div>
+          <div class="stat-chip" title="Handkarten">✋ <b id="opp-hand">0</b></div>
+          <div class="stat-chip" title="Deck">🂠 <b id="opp-deck">0</b></div>
+          <div class="stat-chip" title="Friedhof">🪦 <b id="opp-grave">0</b></div>
+          <div class="stat-chip" title="Verbannung">🚫 <b id="opp-banish">0</b></div>
+          <button class="btn btn-mini" id="btn-speed" title="Animations-Tempo umschalten">⏩ 1×</button>
+          <button class="btn btn-mini" id="btn-handsort" title="Hand sortieren (Typ/Stufe)">⇅</button>
+          <button class="btn btn-mini" id="btn-surrender">🏳️</button>
+        </div>
+      </header>
+
+      <!-- HUD: Spieler -->
+      <div class="duel-playerbar">
+        <div class="duelist" id="info-me">
+          <div class="avatar me">🍥</div>
+          <div class="duelist-meta">
+            <div class="duelist-name" id="my-name">Du</div>
+            <div class="lpbar"><div class="lpfill" id="my-lpfill"></div><span class="lptext" id="my-lptext">8000</span></div>
+          </div>
+        </div>
+        <div class="player-chips">
+          <div class="stat-chip" title="Deck">🂠 <b id="my-deck">0</b></div>
+          <div class="stat-chip" title="Friedhof">🪦 <b id="my-grave">0</b></div>
+          <div class="stat-chip" title="Verbannung">🚫 <b id="my-banish">0</b></div>
+        </div>
+      </div>
+
+      <!-- Phasen-Steuerung -->
+      <div id="mid-bar">
+        <div id="phase-chips">
+          <span data-ph="main1">H1</span><span data-ph="battle">Kampf</span><span data-ph="main2">H2</span>
+        </div>
+        <button class="btn btn-primary" id="phase-btn">Kampfphase ⚔️</button>
+      </div>
+
+      <!-- Log -->
+      <div id="duel-log"></div>
+
+      <!-- Kampflog (seitlich, letzte Aktionen) -->
+      <div id="vlog"></div>
+
+      <!-- Hand -->
+      <div id="hand-row"><div id="hand"></div></div>
+
+      <!-- Auswahl-Banner (Ziel/Tribut/Angriff) -->
+      <div id="sel-banner" class="hidden">
+        <span id="sel-text">Wähle ein Ziel</span>
+        <button class="btn btn-mini btn-primary hidden" id="sel-ok">OK</button>
+        <button class="btn btn-mini" id="sel-cancel">✕</button>
+      </div>
+    </div>
+
+    <!-- Dreh-Hinweis im Hochformat -->
+    <div id="rotate-hint" class="hidden">📱 Für das beste Erlebnis drehe dein Handy ins Querformat
+      <button class="btn btn-mini" id="rotate-ok">OK</button>
+    </div>
+
+    <div id="turn-banner" class="hidden"></div>
+
+    <!-- Karten-Enthüllung (Flip durch Angriff / Jutsu / Falle) -->
+    <div id="reveal" class="hidden">
+      <div id="reveal-caption"></div>
+      <div id="reveal-card"></div>
+    </div>
+  </section>
+
+  <!-- ================= DECK-EDITOR ================= -->
+  <section class="screen" id="scr-deck">
+    <div class="panel wide tall">
+      <div class="panel-head">
+        <button class="btn btn-back" data-back="scr-menu">‹ Zurück</button>
+        <h2>Deck-Editor</h2>
+        <span class="deck-count" id="deck-count">0/30</span>
+      </div>
+      <div class="deck-tabs">
+        <button class="tab active" id="tab-collection">Sammlung</button>
+        <button class="tab" id="tab-current">Mein Deck</button>
+      </div>
+      <div class="deck-meta-row">
+        <button class="btn btn-mini" id="deck-switch" title="Deck wechseln / verwalten">📂 <span id="deck-name">Mein Deck</span></button>
+        <button class="btn btn-mini" id="deck-new" title="Neues Deck anlegen">✨ Neues Deck</button>
+        <button class="btn btn-mini" id="deck-autofill" title="Deck automatisch mit den besten Karten füllen">⚡ Auto-Fill</button>
+      </div>
+      <div class="deck-filter-row hidden" id="deck-filters">
+        <input type="search" id="filter-search" placeholder="🔍 Suche…" autocomplete="off">
+        <select id="filter-kind">
+          <option value="">Typ: Alle</option>
+          <option value="ninja">Ninja</option>
+          <option value="jutsu">Jutsu</option>
+          <option value="falle">Falle</option>
+        </select>
+        <select id="filter-attr">
+          <option value="">Attribut: Alle</option>
+          <option value="feuer">🔥 Feuer</option>
+          <option value="wasser">💧 Wasser</option>
+          <option value="wind">🍃 Wind</option>
+          <option value="erde">🪨 Erde</option>
+          <option value="blitz">⚡ Blitz</option>
+          <option value="licht">☀️ Licht</option>
+          <option value="finsternis">🌑 Finsternis</option>
+        </select>
+        <select id="filter-rarity">
+          <option value="">Rarität: Alle</option>
+          <option value="N">N</option>
+          <option value="R">R</option>
+          <option value="SR">SR</option>
+          <option value="UR">UR</option>
+        </select>
+        <select id="filter-sort">
+          <option value="default">Sort: Typ/Stufe</option>
+          <option value="atk">Sort: ANG</option>
+          <option value="level">Sort: Stufe</option>
+          <option value="name">Sort: Name</option>
+          <option value="rarity">Sort: Rarität</option>
+        </select>
+      </div>
+      <div id="deck-msg"></div>
+      <div id="collection-grid" class="card-grid"></div>
+      <div id="deck-list" class="card-grid hidden"></div>
+      <div class="deck-actions">
+        <button class="btn btn-primary" id="deck-save">💾 Speichern</button>
+        <button class="btn" id="deck-reset">↺ Starter-Deck</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ANLEITUNG ================= -->
+  <section class="screen" id="scr-help">
+    <div class="panel wide tall">
+      <div class="panel-head">
+        <button class="btn btn-back" data-back="scr-menu">‹ Zurück</button>
+        <h2>Anleitung</h2>
+      </div>
+      <div class="help-text">
+        <h3>🎯 Ziel</h3>
+        <p>Reduziere die LP deines Gegners von <b>8000 auf 0</b>. Du verlierst auch, wenn dein Deck leer ist.</p>
+        <h3>🔄 Zugablauf</h3>
+        <p><b>Ziehen → Hauptphase 1 → Kampfphase → Hauptphase 2 → Ende.</b> Wer beginnt, zieht keine Karte und darf nicht angreifen.</p>
+        <h3>🥷 Ninja beschwören</h3>
+        <p>Einmal pro Zug eine <b>Normalbeschwörung</b>: Stufe 1–4 kostenlos · Stufe 5–6 = <b>1 Tribut</b> · Stufe 7+ = <b>2 Tribute</b>. Alternativ verdeckt in Verteidigung setzen.</p>
+        <h3>⚔️ Kampf</h3>
+        <p>Greife mit einem Ninja ein gegnerisches an — höhere ATK gewinnt, die Differenz wird als Schaden abgezogen. Gegen Verteidigung gibt es keinen Schaden (außer bei <b>Durchdringung</b>). Hat der Gegner keine Ninja: <b>Direktangriff!</b></p>
+        <h3>🔥 Chakra-Naturen</h3>
+        <p>Beim Angriff gibt es bei <b>Elementvorteil +300 ANG</b> (wird am Ziel mit ⚡+300 markiert):<br>
+        🔥 Feuer schlägt 🍃 Wind · 🍃 Wind schlägt ⚡ Blitz · ⚡ Blitz schlägt 🪨 Erde · 🪨 Erde schlägt 💧 Wasser · 💧 Wasser schlägt 🔥 Feuer · ☀️ Licht und 🌑 Finsternis schlagen sich gegenseitig.</p>
+        <h3>📜 Jutsu & Fallen</h3>
+        <p><b>Normale Jutsus</b> nur in deiner Hauptphase · <b>Schnell-Jutsus</b> ⚡ auch im Kampf · <b>Ausrüstungen</b> bleiben liegen · <b>Fallen</b> müssen erst gesetzt werden und lösen ab dem nächsten Zug automatisch aus.</p>
+        <h3>🏆 Freischalten</h3>
+        <p>Jeder Sieg schaltet den nächsten Gegner frei! Als Beute droppen Karten <b>aus dem gegnerischen Deck</b>: eine N-Karte ist sicher, R droppt zu 50 %, SR zu 5 % und UR zu 2 %. Beim <b>ersten Sieg</b> über einen Gegner sind die Chancen deutlich höher — garantiert ist aber nichts. Baue aus der Beute dein Deck im Editor um!</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="toast" class="hidden"></div>
+
+  <!-- Globale Overlays (stehen AUSSERHALB der Screens, damit sie überall funktionieren) -->
+  <div id="sheet" class="overlay hidden">
+    <div class="sheet-box">
+      <div id="sheet-card"></div>
+      <div id="sheet-actions"></div>
+      <button class="btn" id="sheet-close">Schließen</button>
+    </div>
+  </div>
+  <div id="modal" class="overlay hidden"><div class="modal-box" id="modal-body"></div></div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+<script>
+window.__errors = [];
+window.onerror = function (msg, src, line) { window.__errors.push(msg + ' @' + (src||'').split('/').pop() + ':' + line); };
+// Seed: 12 Siege (davon itachi 1, kurogane 1), 3 Niederlagen, 12.345 Schaden
+localStorage.setItem('ntcg_save_v1', JSON.stringify({
+  wins: { iruka: 5, sasuke: 4, gaara: 1, itachi: 1, kurogane: 1 },
+  losses: { itachi: 2, kurogane: 1 },
+  stats: { games: 15, damageDealt: 12345 },
+  story: { introDone: true, flags: {}, progress: 5 },
+}));
+</script>
+<script src="../js/data.js"></script>
+<script src="../js/engine.js"></script>
+<script src="../js/ai.js"></script>
+<script src="../js/audio.js"></script>
+<script src="../js/music.js"></script>
+<script src="../js/story.js"></script>
+<script src="../js/duel.js"></script>
+<script src="../js/map.js"></script>
+<script src="../js/main.js"></script>
+<script>
+window.addEventListener('load', function () {
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.prototype.slice.call(document.querySelectorAll(s));
+  let steps = 0, phase = 'menu';
+  function finish(status, info) {
+    clearInterval(poll);
+    const res = document.createElement('div');
+    res.id = 'probe-result';
+    res.textContent = 'STATS|' + status + (info ? '|info=' + info : '') +
+      '|errors=' + (window.__errors.length ? window.__errors.join(' ;; ') : 'none');
+    document.body.appendChild(res);
+  }
+  const poll = setInterval(function () {
+    try {
+      steps++;
+      if (steps > 60) return finish('TIMEOUT', 'phase=' + phase);
+      if (phase === 'menu') {
+        if (!NTCG.Store || !NTCG.Store.data) return;
+        $('#scr-title').click(); // Titel → Menü (introDone, also direkt)
+        if (!$('#scr-menu').classList.contains('active')) return finish('FAIL', 'Menü nicht aktiv');
+        phase = 'achievements'; return;
+      }
+      if (phase === 'achievements') {
+        // Menü-Show hat checkAchievements laufen lassen:
+        // 12 Siege → first_win + win_10; itachi → beat_itachi; kurogane → beat_kurog; 12345 dmg → dmg_10k
+        const a = NTCG.Store.data.achievements;
+        for (const id of ['first_win', 'win_10', 'beat_itachi', 'beat_kurog', 'dmg_10k']) {
+          if (!a[id]) return finish('FAIL', 'Erfolg fehlt: ' + id + ' in ' + JSON.stringify(a));
+        }
+        if (a.win_25) return finish('FAIL', 'win_25 bei 12 Siegen?');
+        phase = 'stats'; return;
+      }
+      if (phase === 'stats') {
+        $('#btn-stats').click();
+        if ($('#modal').classList.contains('hidden')) return finish('FAIL', 'Statistik-Modal blieb zu');
+        const t = $('#modal-body').textContent;
+        if (t.indexOf('15') < 0) return finish('FAIL', 'Duelle≠15: ' + t.slice(0, 120));
+        if (t.indexOf('80 %') < 0) return finish('FAIL', 'Siegrate≠80 %');
+        if (t.indexOf('12.345') < 0 && t.indexOf('12345') < 0) return finish('FAIL', 'Schaden fehlt');
+        const rows = $$('#modal-body .ach-row');
+        if (rows.length !== NTCG.ACHIEVEMENTS.length) return finish('FAIL', 'ach-rows=' + rows.length);
+        const done = $$('#modal-body .ach-row.done').length;
+        if (done < 5) return finish('FAIL', 'done=' + done);
+        // Erfolge haben Karten gegeben: Sammlung muss über dem Seed-Stand sein
+        phase = 'backup'; return;
+      }
+      if (phase === 'backup') {
+        $('#btn-backup').click();
+        const modal = $('#modal-body');
+        const tas = $$('#modal-body textarea');
+        if (tas.length !== 2) return finish('FAIL', 'textareas=' + tas.length);
+        const code = tas[0].value;
+        if (!code || code.length < 100) return finish('FAIL', 'Export-Code zu kurz');
+        // Roundtrip: Code dekodieren → muss die Seed-Werte enthalten
+        let decoded = null;
+        try { decoded = JSON.parse(decodeURIComponent(escape(atob(code)))); }
+        catch (e) { return finish('FAIL', 'Export nicht dekodierbar: ' + e.message); }
+        if (!decoded.wins || decoded.wins.iruka !== 5) return finish('FAIL', 'Roundtrip wins falsch');
+        if (!decoded.achievements || !decoded.achievements.first_win) return finish('FAIL', 'Roundtrip achievements fehlen');
+        // Import mit Müll → Toast, kein Crash
+        tas[1].value = '!!!kein-code!!!';
+        const btns = $$('#modal-body .btn');
+        const apply = btns.find((b) => b.textContent.indexOf('Importieren') >= 0);
+        if (!apply) return finish('FAIL', 'kein Import-Button');
+        apply.click();
+        const toast = $('#toast');
+        if (toast.classList.contains('hidden') || toast.textContent.indexOf('Ungültig') < 0)
+          return finish('FAIL', 'kein Warn-Toast bei Müll-Import');
+        finish('OK', 'ach=5|roundtrip=ok|import-guard=ok');
+        return;
+      }
+    } catch (e) { finish('EXCEPTION', e.message); }
+  }, 200);
+});
+</script>
+</body>
+</html>

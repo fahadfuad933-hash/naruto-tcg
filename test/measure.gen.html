@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../css/style.css">
+<title>measure</title>
+</head>
+<body>
+
+  <div id="bg-leaves"></div>
+
+  <!-- ================= TITEL ================= -->
+  <section class="screen active" id="scr-title">
+    <div class="title-wrap">
+      <div class="title-spiral">🍥</div>
+      <h1 class="game-logo">NARUTO <span>TGC</span></h1>
+      <p class="game-sub">— Chakra-Duell —</p>
+      <p class="tap-start blink">Tippen zum Starten</p>
+      <p class="title-hint">Speed-Duell · 4000 LP · wie Duel Links</p>
+    </div>
+  </section>
+
+  <!-- ================= HAUPTMENÜ ================= -->
+  <section class="screen" id="scr-menu">
+    <div class="panel menu-panel">
+      <div class="menu-head">
+        <span class="menu-logo">🍥</span>
+        <h2>NARUTO TGC</h2>
+        <p class="menu-wins" id="menu-wins">Siege: 0</p>
+      </div>
+      <div class="menu-buttons">
+        <button class="btn btn-big btn-primary" id="btn-duel">⚔️ Duell starten</button>
+        <button class="btn btn-big" id="btn-deck">🃏 Deck-Editor</button>
+        <button class="btn btn-big" id="btn-help">📖 Anleitung</button>
+        <button class="btn btn-big" id="btn-sound">🔊 Ton: An</button>
+      </div>
+      <p class="menu-foot">Tipp: Querformat ist am schönsten 📱↔️</p>
+    </div>
+  </section>
+
+  <!-- ================= GEGNERWAHL ================= -->
+  <section class="screen" id="scr-select">
+    <div class="panel wide">
+      <div class="panel-head">
+        <button class="btn btn-back" data-back="scr-menu">‹ Zurück</button>
+        <h2>Wähle deinen Gegner</h2>
+      </div>
+      <div id="opp-list" class="opp-list"></div>
+    </div>
+  </section>
+
+  <!-- ================= DUELL ================= -->
+  <section class="screen" id="scr-duel">
+    <div id="duel-field">
+      <!-- Gegner -->
+      <div class="duel-topbar">
+        <div class="duelist" id="info-opp">
+          <div class="avatar" id="opp-avatar">🌑</div>
+          <div class="duelist-meta">
+            <div class="duelist-name" id="opp-name">Gegner</div>
+            <div class="lpbar"><div class="lpfill" id="opp-lpfill"></div><span class="lptext" id="opp-lptext">4000</span></div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="stat-chip" title="Handkarten">✋ <b id="opp-hand">0</b></div>
+          <div class="stat-chip" title="Deck">🂠 <b id="opp-deck">0</b></div>
+          <div class="stat-chip" title="Friedhof">🪦 <b id="opp-grave">0</b></div>
+          <button class="btn btn-mini" id="btn-surrender">🏳️</button>
+        </div>
+      </div>
+
+      <!-- Feld -->
+      <div id="field-grid">
+        <div class="zone-row" id="opp-st"></div>
+        <div class="zone-row" id="opp-mon"></div>
+        <div id="mid-bar">
+          <div id="phase-chips">
+            <span data-ph="main1">H1</span><span data-ph="battle">Kampf</span><span data-ph="main2">H2</span>
+          </div>
+          <div id="duel-log"></div>
+          <button class="btn btn-primary" id="phase-btn">Kampfphase ⚔️</button>
+        </div>
+        <div class="zone-row" id="my-mon"></div>
+        <div class="zone-row" id="my-st"></div>
+      </div>
+
+      <!-- Spieler -->
+      <div class="duel-bottombar">
+        <div class="duelist" id="info-me">
+          <div class="avatar me">🍥</div>
+          <div class="duelist-meta">
+            <div class="duelist-name">Du</div>
+            <div class="lpbar"><div class="lpfill" id="my-lpfill"></div><span class="lptext" id="my-lptext">4000</span></div>
+          </div>
+        </div>
+        <div class="stat-chip" title="Deck">🂠 <b id="my-deck">0</b></div>
+        <div class="stat-chip" title="Friedhof">🪦 <b id="my-grave">0</b></div>
+      </div>
+
+      <!-- Hand -->
+      <div id="hand-row"><div id="hand"></div></div>
+
+      <!-- Auswahl-Banner (Ziel/Tribut/Angriff) -->
+      <div id="sel-banner" class="hidden">
+        <span id="sel-text">Wähle ein Ziel</span>
+        <button class="btn btn-mini btn-primary hidden" id="sel-ok">OK</button>
+        <button class="btn btn-mini" id="sel-cancel">✕</button>
+      </div>
+    </div>
+
+    <!-- Aktionsmenü für Karten -->
+    <div id="sheet" class="overlay hidden">
+      <div class="sheet-box">
+        <div id="sheet-card"></div>
+        <div id="sheet-actions"></div>
+        <button class="btn" id="sheet-close">Schließen</button>
+      </div>
+    </div>
+
+    <!-- Modals (Falle / Abwurf / Kuchiyose / Ergebnis) -->
+    <div id="modal" class="overlay hidden"><div class="modal-box" id="modal-body"></div></div>
+
+    <!-- Dreh-Hinweis im Hochformat -->
+    <div id="rotate-hint" class="hidden">📱 Für das beste Erlebnis drehe dein Handy ins Querformat
+      <button class="btn btn-mini" id="rotate-ok">OK</button>
+    </div>
+
+    <div id="turn-banner" class="hidden"></div>
+  </section>
+
+  <!-- ================= DECK-EDITOR ================= -->
+  <section class="screen" id="scr-deck">
+    <div class="panel wide tall">
+      <div class="panel-head">
+        <button class="btn btn-back" data-back="scr-menu">‹ Zurück</button>
+        <h2>Deck-Editor</h2>
+        <span class="deck-count" id="deck-count">0/30</span>
+      </div>
+      <div class="deck-tabs">
+        <button class="tab active" id="tab-collection">Sammlung</button>
+        <button class="tab" id="tab-current">Mein Deck</button>
+      </div>
+      <div id="deck-msg"></div>
+      <div id="collection-grid" class="card-grid"></div>
+      <div id="deck-list" class="card-grid hidden"></div>
+      <div class="deck-actions">
+        <button class="btn btn-primary" id="deck-save">💾 Speichern</button>
+        <button class="btn" id="deck-reset">↺ Starter-Deck</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ANLEITUNG ================= -->
+  <section class="screen" id="scr-help">
+    <div class="panel wide tall">
+      <div class="panel-head">
+        <button class="btn btn-back" data-back="scr-menu">‹ Zurück</button>
+        <h2>Anleitung</h2>
+      </div>
+      <div class="help-text">
+        <h3>🎯 Ziel</h3>
+        <p>Reduziere die LP deines Gegners von <b>4000 auf 0</b>. Du verlierst auch, wenn dein Deck leer ist.</p>
+        <h3>🔄 Zugablauf</h3>
+        <p><b>Ziehen → Hauptphase 1 → Kampfphase → Hauptphase 2 → Ende.</b> Wer beginnt, zieht keine Karte und darf nicht angreifen.</p>
+        <h3>🥷 Ninja beschwören</h3>
+        <p>Einmal pro Zug eine <b>Normalbeschwörung</b>: Stufe 1–4 kostenlos · Stufe 5–6 = <b>1 Tribut</b> · Stufe 7+ = <b>2 Tribute</b>. Alternativ verdeckt in Verteidigung setzen.</p>
+        <h3>⚔️ Kampf</h3>
+        <p>Greife mit einem Ninja ein gegnerisches an — höhere ATK gewinnt, die Differenz wird als Schaden abgezogen. Gegen Verteidigung gibt es keinen Schaden (außer bei <b>Durchdringung</b>). Hat der Gegner keine Ninja: <b>Direktangriff!</b></p>
+        <h3>📜 Jutsu & Fallen</h3>
+        <p><b>Normale Jutsus</b> nur in deiner Hauptphase · <b>Schnell-Jutsus</b> ⚡ auch im Kampf · <b>Ausrüstungen</b> bleiben liegen · <b>Fallen</b> müssen erst gesetzt werden und lösen ab dem nächsten Zug automatisch aus.</p>
+        <h3>🏆 Freischalten</h3>
+        <p>Besiege Gegner, um ihre Karten für deinen Deck-Editor zu gewinnen. Jeder Sieg schaltet den nächsten Gegner frei!</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="toast" class="hidden"></div>
+
+  
+  
+  
+  
+  
+  
+
+<script src="../js/data.js"></script>
+<script src="../js/engine.js"></script>
+<script src="../js/ai.js"></script>
+<script src="../js/audio.js"></script>
+<script src="../js/duel.js"></script>
+<script src="../js/main.js"></script>
+<script>
+window.addEventListener('load', function () {
+  setTimeout(() => {
+    document.getElementById('scr-title').click();
+    document.getElementById('btn-duel').click();
+    document.querySelector('.opp-card:not(.locked)').click();
+    setTimeout(() => {
+      const r = (s) => { const e = document.querySelector(s); if (!e) return s + ':MISSING'; const b = e.getBoundingClientRect(); return s + ' x=' + Math.round(b.left) + ' w=' + Math.round(b.width) + ' right=' + Math.round(b.right); };
+      const lines = [
+        'innerWidth=' + window.innerWidth,
+        'cardW=' + getComputedStyle(document.documentElement).getPropertyValue('--card-w'),
+        r('#duel-field'), r('#field-grid'), r('#mid-bar'), r('#phase-chips'), r('#duel-log'), r('#phase-btn'),
+        r('#hand-row'), r('.duel-topbar'), r('.duel-bottombar'),
+      ];
+      const d = document.createElement('div');
+      d.id = 'measure';
+      d.textContent = 'MEASURE|' + lines.join(' | ');
+      document.body.appendChild(d);
+    }, 1500);
+  }, 400);
+});
+</script>
+</body>
+</html>

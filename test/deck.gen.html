@@ -127,21 +127,24 @@
     <div id="duel-field">
       <!-- 3D-Arena -->
       <div id="board-scene">
+        <!-- Seiten-Rail Gegner (ungekippt, HUD-Ebene): Verbannt / Friedhof / Deck -->
+        <div class="side-rails" id="rail-opp">
+          <button class="pile ban" id="opp-banpile" title="Verbannte Karten des Gegners ansehen"></button>
+          <button class="pile gy" id="opp-gypile" title="Gegner-Friedhof ansehen"></button>
+          <div class="pile deck" id="opp-deckpile" title="Gegner-Deck"></div>
+        </div>
         <div id="board-3d">
           <img class="arena-emblem-img" src="assets/ui/arena-emblem.jpg" alt="" draggable="false" onerror="this.remove()">
           <div class="zone-row" id="opp-st"></div>
           <div class="zone-row" id="opp-mon"></div>
           <div class="zone-row" id="my-mon"></div>
           <div class="zone-row" id="my-st"></div>
-          <!-- ygopro-Stil: Deck-Stapel & Friedhof als Feld-Zonen (beide Seiten) -->
-          <div class="board-zones opp" id="opp-zones">
-            <div class="pile deck" id="opp-deckpile" title="Gegner-Deck"></div>
-            <button class="pile gy" id="opp-gypile" title="Gegner-Friedhof ansehen"></button>
-          </div>
-          <div class="board-zones my" id="my-zones">
-            <button class="pile gy" id="my-gypile" title="Friedhof ansehen"></button>
-            <div class="pile deck" id="my-deckpile" title="Deck"></div>
-          </div>
+        </div>
+        <!-- Seiten-Rail Spieler (ungekippt, HUD-Ebene): Verbannt / Friedhof / Deck -->
+        <div class="side-rails" id="rail-my">
+          <button class="pile ban" id="my-banpile" title="Deine verbannten Karten ansehen"></button>
+          <button class="pile gy" id="my-gypile" title="Friedhof ansehen"></button>
+          <div class="pile deck" id="my-deckpile" title="Deck"></div>
         </div>
       </div>
 

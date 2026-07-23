@@ -1,7 +1,7 @@
 /* NARUTO TGC — Service Worker: Cache-first für die komplette App (offline).
    Bei Updates CACHE-Version erhöhen, damit alte Caches verworfen werden. */
 'use strict';
-const CACHE = 'ntcg-v10';
+const CACHE = 'ntcg-v11';
 const CORE = [
   './', './index.html', './manifest.json',
   './css/style.css',

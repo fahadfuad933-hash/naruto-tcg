@@ -226,7 +226,9 @@ body {
   --tilt: 38deg;
 }
 @media (orientation: landscape) {
-  #board-scene { --tilt: 26deg; }
+  #board-scene { --tilt: 16deg; }
+  #board-3d { gap: 4px; padding: calc(var(--card-w) * 0.14 + 4px) 12px 6px; }
+  .zone-row { gap: calc(var(--card-w) * 0.18); }
 }
 #board-scene::before {   /* Boden-Glow */
   content: ""; position: absolute; left: 50%; top: 58%;

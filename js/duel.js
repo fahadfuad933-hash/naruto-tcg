@@ -1503,7 +1503,7 @@
   }
 
   /* ================= Responsive Kartengröße ================= */
-  const TILT = { landscape: 0.58, portrait: 0.90 }; // sichtbare Höhe des Feldes nach rotateX + Perspektive
+  const TILT = { landscape: 0.50, portrait: 0.90 }; // sichtbare Höhe des Feldes nach rotateX + Perspektive
   function fitLayout() {
     const field = document.getElementById('duel-field');
     if (!field || !document.getElementById('scr-duel').classList.contains('active')) return;
@@ -1512,19 +1512,19 @@
     const root = document.documentElement.style;
 
     // Handkarten: eigenes Band am unteren Rand, so groß wie möglich
-    let handW = ((landscape ? H * 0.26 : H * 0.19) - 10) / 1.3667;
-    handW = Math.min(handW, (W * (landscape ? 0.60 : 0.92)) / 4.2); // 6 Karten mit Überlappung
-    handW = Math.max(56, Math.min(landscape ? 116 : 96, Math.floor(handW)));
+    let handW = ((landscape ? H * 0.24 : H * 0.19) - 8) / 1.3667;
+    handW = Math.min(handW, (W * (landscape ? 0.58 : 0.92)) / 4.2); // 6 Karten mit Überlappung
+    handW = Math.max(54, Math.min(landscape ? 112 : 96, Math.floor(handW)));
     root.setProperty('--hand-w', handW + 'px');
 
     // Feldkarten: müssen in die perspektivisch verkürzte Arena passen
-    const sceneH = H - (handW * 1.3667 + 10) - 4 + handW * 0.30; // Hand überlappt das Feld deutlich (Duel-Links-Stil)
+    const sceneH = H - (handW * 1.3667 + 8) - 2 + handW * 0.35; // Hand überlappt das Feld deutlich (Duel-Links-Stil)
     const tilt = landscape ? TILT.landscape : TILT.portrait;
-    const reserve = landscape ? 16 : 92; // Puffer für HUD-Elemente
-    const railW = landscape ? 2 * 56 : 2 * 60; // Seiten-Rails (Pile + Abstand zur Matte) einrechnen
-    let w = ((sceneH - reserve) / tilt - 38) / 4.6; // 4 Reihen + Lücken + Padding
-    w = Math.min(w, (W * (landscape ? 0.65 : 0.94) - 30 - railW) / 3.7);
-    w = Math.max(landscape ? 62 : 40, Math.min(landscape ? 128 : 104, Math.floor(w)));
+    const reserve = landscape ? 6 : 92; // Puffer für HUD-Elemente
+    const railW = landscape ? 2 * 52 : 2 * 60; // Seiten-Rails (Pile + Abstand zur Matte) einrechnen
+    let w = ((sceneH - reserve) / tilt - 20) / 3.8; // 4 Reihen + Lücken + Padding
+    w = Math.min(w, (W * (landscape ? 0.72 : 0.94) - 24 - railW) / 3.6);
+    w = Math.max(landscape ? 78 : 40, Math.min(landscape ? 138 : 104, Math.floor(w)));
     root.setProperty('--card-w', w + 'px');
   }
 

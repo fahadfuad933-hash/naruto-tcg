@@ -1503,7 +1503,7 @@
   }
 
   /* ================= Responsive Kartengröße ================= */
-  const TILT = { landscape: 0.50, portrait: 0.90 }; // sichtbare Höhe des Feldes nach rotateX + Perspektive
+  const TILT = { portrait: 0.90 }; // sichtbare Höhe des Feldes nach rotateX (Hochformat-Heuristik)
   function fitLayout() {
     const field = document.getElementById('duel-field');
     if (!field || !document.getElementById('scr-duel').classList.contains('active')) return;
@@ -1514,17 +1514,29 @@
     // Handkarten: eigenes Band am unteren Rand, so groß wie möglich
     let handW = ((landscape ? H * 0.24 : H * 0.19) - 8) / 1.3667;
     handW = Math.min(handW, (W * (landscape ? 0.58 : 0.92)) / 4.2); // 6 Karten mit Überlappung
-    handW = Math.max(54, Math.min(landscape ? 112 : 96, Math.floor(handW)));
+    handW = Math.max(52, Math.min(landscape ? 112 : 96, Math.floor(handW)));
     root.setProperty('--hand-w', handW + 'px');
 
     // Feldkarten: müssen in die perspektivisch verkürzte Arena passen
-    const sceneH = H - (handW * 1.3667 + 8) - 2 + handW * 0.35; // Hand überlappt das Feld deutlich (Duel-Links-Stil)
-    const tilt = landscape ? TILT.landscape : TILT.portrait;
-    const reserve = landscape ? 6 : 92; // Puffer für HUD-Elemente
-    const railW = landscape ? 2 * 52 : 2 * 60; // Seiten-Rails (Pile + Abstand zur Matte) einrechnen
-    let w = ((sceneH - reserve) / tilt - 20) / 3.8; // 4 Reihen + Lücken + Padding
-    w = Math.min(w, (W * (landscape ? 0.72 : 0.94) - 24 - railW) / 3.6);
-    w = Math.max(landscape ? 78 : 40, Math.min(landscape ? 138 : 104, Math.floor(w)));
+    const sceneH = H - (handW * 1.3667 + 8) - 2 + handW * 0.35; // Hand überlappt das Feld (Duel-Links-Stil)
+    let w;
+    if (landscape) {
+      // Querformat: größte Kartenbreite, bei der die projizierte Matte komplett in die Szene passt.
+      // Konstanten müssen zu css/style.css passen (#board-scene --tilt 40deg, perspective 1500,
+      // #board-3d gap 4 + padding 0.14w+10 → Mattenhöhe = 5.61w + 22).
+      const tiltRad = 40 * Math.PI / 180, f = 1500, s = Math.sin(tiltRad), c = Math.cos(tiltRad);
+      const span = (cw) => { const h = (cw * 5.61 + 22) / 2; return h * c * f * (1 / (f + h * s) + 1 / (f - h * s)); };
+      w = 48;
+      for (let cand = 48; cand <= 170; cand++) { if (span(cand) <= sceneH - 6) w = cand; else break; }
+      w = Math.min(w, Math.floor((W - 2 * 52 - 48) / 3.36)); // Seiten-Rails + Matten-Padding
+    } else {
+      const tilt = TILT.portrait;
+      const reserve = 92; // Puffer für HUD-Elemente
+      const railW = 2 * 60; // Seiten-Rails (Pile + Abstand zur Matte) einrechnen
+      w = ((sceneH - reserve) / tilt - 20) / 3.8; // 4 Reihen + Lücken + Padding
+      w = Math.min(w, (W * 0.94 - 24 - railW) / 3.6);
+      w = Math.max(40, Math.min(104, Math.floor(w)));
+    }
     root.setProperty('--card-w', w + 'px');
   }
 

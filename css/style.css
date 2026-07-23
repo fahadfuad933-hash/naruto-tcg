@@ -2,17 +2,20 @@
    NARUTO TGC — Design (Mobile-First, Touch-optimiert)
    ============================================================ */
 :root {
-  --bg0: #0b0e1a;
-  --bg1: #141a30;
-  --panel: rgba(20, 26, 48, 0.92);
-  --line: rgba(255, 255, 255, 0.09);
+  --bg0: #070914;
+  --bg1: #0e1428;
+  --panel: rgba(14, 20, 42, 0.88);
+  --panel-glass: rgba(16, 23, 50, 0.75);
+  --line: rgba(110, 160, 255, 0.16);
   --orange: #ff7a1a;
-  --orange2: #ffb02e;
+  --orange2: #ffa62b;
   --blue: #2e6bff;
-  --text: #eef1f8;
-  --muted: #9aa5b1;
+  --cyan: #40c8ff;
+  --text: #f0f4fd;
+  --muted: #a0aec0;
   --good: #3ddc84;
   --bad: #ff5252;
+  --gold: #ffe066;
   --card-w: clamp(64px, 15.5vmin, 108px);
   --sat: env(safe-area-inset-top, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
@@ -29,7 +32,7 @@ html, body {
   overflow: hidden;
   background: var(--bg0);
   color: var(--text);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
@@ -38,9 +41,9 @@ html, body {
 
 body {
   background:
-    radial-gradient(1200px 600px at 80% -10%, rgba(255, 122, 26, 0.14), transparent 60%),
-    radial-gradient(900px 500px at 10% 110%, rgba(46, 107, 255, 0.12), transparent 60%),
-    linear-gradient(180deg, var(--bg0), var(--bg1));
+    radial-gradient(1200px 700px at 75% -10%, rgba(255, 145, 0, 0.18), transparent 65%),
+    radial-gradient(1000px 600px at 15% 110%, rgba(64, 200, 255, 0.14), transparent 65%),
+    linear-gradient(180deg, #070914 0%, #0d1226 50%, #090c1a 100%);
 }
 
 /* ---------- schwebende Blätter ---------- */
@@ -71,24 +74,25 @@ body {
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  min-height: 46px; padding: 10px 18px;
+  min-height: 48px; padding: 10px 20px;
   border: 1px solid var(--line); border-radius: 14px;
-  background: rgba(255, 255, 255, 0.07);
-  color: var(--text); font-size: 16px; font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.08s, background 0.15s, box-shadow 0.15s;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  color: var(--text); font-size: 16px; font-weight: 700; letter-spacing: 0.3px;
+  cursor: pointer; backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  transition: transform 0.1s ease, background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
-.btn:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.14); }
+.btn:active { transform: scale(0.95) translateY(1px); background: rgba(255, 255, 255, 0.16); }
 .btn:disabled { opacity: 0.4; pointer-events: none; }
 .btn-primary {
-  background: linear-gradient(180deg, var(--orange2), var(--orange));
-  border-color: #ffc46b; color: #231100;
-  box-shadow: 0 4px 18px rgba(255, 122, 26, 0.35);
+  background: linear-gradient(180deg, #ffa62b 0%, #ff7a1a 100%);
+  border-color: #ffc46b; color: #1a0b00; font-weight: 800;
+  box-shadow: 0 6px 20px rgba(255, 122, 26, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.4);
 }
-.btn-primary:active { box-shadow: 0 2px 8px rgba(255, 122, 26, 0.5); }
-.btn-big { width: 100%; min-height: 58px; font-size: 19px; border-radius: 16px; }
+.btn-primary:active { box-shadow: 0 2px 10px rgba(255, 122, 26, 0.6); }
+.btn-big { width: 100%; min-height: 58px; font-size: 19px; border-radius: 16px; font-weight: 800; }
 .btn-mini { min-height: 42px; padding: 7px 14px; font-size: 15px; border-radius: 11px; }
-.btn-back { min-height: 40px; padding: 6px 14px; }
+.btn-back { min-height: 40px; padding: 6px 14px; font-size: 14px; }
 
 /* ---------- Panels / Menüs ---------- */
 .panel {
@@ -97,10 +101,13 @@ body {
   overflow-y: auto;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 22px;
-  padding: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
 }
 .panel.wide { width: min(760px, 96vw); }
 .panel.tall { height: calc(100dvh - 20px - var(--sat) - var(--sab)); display: flex; flex-direction: column; }
@@ -226,7 +233,8 @@ body {
   --tilt: 38deg;
 }
 @media (orientation: landscape) {
-  #board-scene { --tilt: 16deg; }
+  /* steilerer Tilt = Duel-Links-Look; Wert muss zu tiltRad in duel.js fitLayout passen */
+  #board-scene { --tilt: 40deg; }
   #board-3d { gap: 4px; padding: calc(var(--card-w) * 0.14 + 4px) 12px 6px; }
   .zone-row { gap: calc(var(--card-w) * 0.18); }
 }
@@ -549,42 +557,45 @@ body {
 .duel-topbar > * { pointer-events: auto; }
 .duelist {
   display: flex; align-items: center; gap: 10px;
-  background: rgba(8, 11, 24, 0.78); border: 1px solid var(--line);
-  border-radius: 16px; padding: 8px 16px 8px 8px;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  background: rgba(10, 15, 34, 0.85); border: 1px solid rgba(110, 160, 255, 0.22);
+  border-radius: 16px; padding: 7px 14px 7px 7px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 .avatar {
-  width: 56px; height: 56px; font-size: 38px;
+  width: 52px; height: 52px; font-size: 34px;
   display: grid; place-items: center; overflow: hidden;
-  background: rgba(0, 0, 0, 0.45); border: 1px solid var(--line); border-radius: 12px;
+  background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
 }
-.avatar.me { border-color: var(--orange); box-shadow: 0 0 12px rgba(255, 122, 26, 0.4); }
-.duelist-name { font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.avatar.me { border-color: var(--orange2); box-shadow: 0 0 16px rgba(255, 145, 0, 0.5); }
+.duelist-name { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 3px; letter-spacing: 0.3px; }
 .lpbar {
-  position: relative; width: clamp(170px, 26vw, 260px); height: 26px;
-  background: rgba(0, 0, 0, 0.55); border: 1px solid var(--line); border-radius: 13px;
+  position: relative; width: clamp(160px, 25vw, 240px); height: 24px;
+  background: rgba(0, 0, 0, 0.65); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 12px rgba(61, 220, 132, 0.18);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 14px rgba(61, 220, 132, 0.25);
 }
 .lpfill {
   height: 100%; width: 100%;
-  background: linear-gradient(90deg, #2fbf71, #7dff9e);
-  border-radius: 12px;
-  transition: width 0.5s ease, background 0.3s;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+  border-radius: 11px;
+  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
 }
-.lpfill.low { background: linear-gradient(90deg, #d9480f, #ffb02e); }
-.lpfill.crit { background: linear-gradient(90deg, #b3001b, #ff5252); }
+.lpfill.low { background: linear-gradient(90deg, #f59e0b, #fbbf24); box-shadow: 0 0 12px rgba(251, 191, 36, 0.6); }
+.lpfill.crit { background: linear-gradient(90deg, #ef4444, #f87171); box-shadow: 0 0 12px rgba(248, 113, 113, 0.8); }
 .lptext {
   position: absolute; inset: 0; display: grid; place-items: center;
-  font-size: 16px; font-weight: 900; font-style: italic; letter-spacing: 0.5px;
-  text-shadow: 0 1px 2px #000;
+  font-size: 15px; font-weight: 900; font-style: italic; letter-spacing: 0.8px;
+  text-shadow: 0 1px 3px #000, 0 0 6px #000; color: #ffffff;
 }
 .topbar-right { display: flex; align-items: center; gap: 7px; }
 .stat-chip {
-  font-size: 14.5px; padding: 7px 11px; border-radius: 11px;
-  background: rgba(8, 11, 24, 0.74); border: 1px solid var(--line);
-  white-space: nowrap; backdrop-filter: blur(4px);
+  font-size: 14px; font-weight: 700; padding: 6px 11px; border-radius: 11px;
+  background: rgba(10, 15, 34, 0.82); border: 1px solid rgba(110, 160, 255, 0.2);
+  white-space: nowrap; backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 .duel-playerbar {
   position: absolute; left: 10px; top: 50%; transform: translateY(-50%);

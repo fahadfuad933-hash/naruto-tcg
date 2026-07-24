@@ -1538,6 +1538,18 @@
       w = Math.max(40, Math.min(104, Math.floor(w)));
     }
     root.setProperty('--card-w', w + 'px');
+
+    // Diagnose (nur mit #debug in der URL): echte Viewport-/Layoutwerte einblenden
+    if (location.hash.includes('debug')) {
+      let dbg = document.getElementById('layout-dbg');
+      if (!dbg) {
+        dbg = document.createElement('div');
+        dbg.id = 'layout-dbg';
+        dbg.style.cssText = 'position:fixed;right:4px;bottom:4px;z-index:200;background:rgba(0,0,0,.8);color:#0f0;font:12px monospace;padding:3px 6px;border-radius:6px;pointer-events:none';
+        document.body.appendChild(dbg);
+      }
+      dbg.textContent = W + 'x' + H + ' cw=' + w + ' hw=' + handW + (landscape ? ' L' : ' P');
+    }
   }
 
   /* ================= Start / Verlassen ================= */
